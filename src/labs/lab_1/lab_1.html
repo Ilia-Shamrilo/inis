@@ -3,17 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Movie DB</title>
+    <title>Movie</title>
     <style>
         table {
-            width: 50%;
+            width: 80%;
             border-collapse: collapse;
             margin-top: 20px;
         }
         th, td {
             border: 1px solid #000000;
             padding: 8px;
-            text-align: left;
+            text-align: center;
         }
         th {
             background-color: #6de7ff;
@@ -24,72 +24,81 @@
 <div id="movies-table"></div>
 
 <script>
-    // 1) Создаем переменную numberOfFilms и запрашиваем у пользователя количество фильмов
-    let numberOfFilms = prompt('Сколько фильмов вы уже посмотрели?', '');
+    function getNumberOfFilms() {
+        let number;
+        do {
+            number = prompt('Сколько фильмов вам запомнилось?', '').trim();
+        } while (!number || isNaN(number) || Number(number) <= 0);
+        return Number(number);
+    }
 
-    // 2) Создаем объект personalMovieDB
+    let numberOfFilms = getNumberOfFilms();
+
+    // Создаем объект personalMovieDB
     const personalMovieDB = {
         count: numberOfFilms,
-        movies: {}
+        movies: []
     };
 
-    // 3) Задаем пользователю вопросы и проверяем ответы
-    for (let i = 0; i < 2; i++) {
+    // Запрашиваем информацию о фильмах
+    for (let i = 0; i < numberOfFilms; i++) {
         let filmName, filmRating;
 
         // Проверка названия фильма
         do {
-            filmName = prompt('Один из последних просмотренных фильмов?', '');
-        } while (!filmName || filmName.length > 50 || filmName.trim() === '');
+            filmName = prompt(`Название фильма ${i + 1}:`, '').trim();
+        } while (!filmName || filmName.length > 50);
 
         // Проверка оценки фильма (от 1 до 10)
         do {
-            filmRating = prompt('На сколько оцените его? (от 1 до 10)', '');
-            // Проверяем, что оценка является числом и находится в диапазоне от 1 до 10
-            filmRating = parseFloat(filmRating); // Преобразуем в число
+            filmRating = prompt(`На сколько оцените "${filmName}"? (от 1 до 10)`, '').trim();
         } while (isNaN(filmRating) || filmRating < 1 || filmRating > 10);
 
-        // 5) Записываем ответы в объект movies
-        personalMovieDB.movies[filmName] = filmRating;
+        // Добавляем фильм в массив
+        personalMovieDB.movies.push({ name: filmName, rating: Number(filmRating) });
     }
 
-    // 6) Выводим объект personalMovieDB в консоль
     console.log(personalMovieDB);
 
-    // 7) Функция для вывода объекта movies в виде таблицы на страницу
+    // Функция для вывода таблицы с фильмами
     function renderMoviesTable(movies) {
         const table = document.createElement('table');
         const thead = document.createElement('thead');
         const tbody = document.createElement('tbody');
 
-        // Создаем заголовок таблицы
+        // Создаем строку заголовков
         const headerRow = document.createElement('tr');
-        const headerFilm = document.createElement('th');
-        headerFilm.textContent = 'Фильм';
-        const headerRating = document.createElement('th');
-        headerRating.textContent = 'Оценка';
-        headerRow.appendChild(headerFilm);
-        headerRow.appendChild(headerRating);
+
+        // Заголовки "Фильм" и "Оценка"
+        const thFilm = document.createElement('th');
+        thFilm.textContent = 'Фильм';
+        headerRow.appendChild(thFilm);
+
+        const thRating = document.createElement('th');
+        thRating.textContent = 'Оценка';
+        headerRow.appendChild(thRating);
+
         thead.appendChild(headerRow);
         table.appendChild(thead);
 
-        // Заполняем таблицу данными
-        for (const [film, rating] of Object.entries(movies)) {
+        // Создаем строки с фильмами и оценками
+        movies.forEach(movie => {
             const row = document.createElement('tr');
-            const cellFilm = document.createElement('td');
-            cellFilm.textContent = film;
-            const cellRating = document.createElement('td');
-            cellRating.textContent = rating;
-            row.appendChild(cellFilm);
-            row.appendChild(cellRating);
+            const tdFilm = document.createElement('td');
+            tdFilm.textContent = movie.name;
+            row.appendChild(tdFilm);
+
+            const tdRating = document.createElement('td');
+            tdRating.textContent = movie.rating;
+            row.appendChild(tdRating);
+
             tbody.appendChild(row);
-        }
+        });
 
         table.appendChild(tbody);
         document.getElementById('movies-table').appendChild(table);
     }
 
-    // Вызываем функцию для отображения таблицы
     renderMoviesTable(personalMovieDB.movies);
 </script>
 </body>
