@@ -27,7 +27,7 @@
     function getNumberOfFilms() {
         let number;
         do {
-            number = prompt('Сколько фильмов вам запомнилось?', '').trim();
+            number = prompt('Сколько фильмов вам запомнилось?', '3').trim();
         } while (!number || isNaN(number) || Number(number) <= 0);
         return Number(number);
     }
