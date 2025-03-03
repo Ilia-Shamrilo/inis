@@ -53,6 +53,8 @@
         personalMovieDB.movies.push({ name: filmName, rating: Number(filmRating) });
     }
 
+    console.log(personalMovieDB);
+
     function renderMoviesTable(movies) {
         const table = document.createElement('table');
         const thead = document.createElement('thead');
