@@ -6,7 +6,7 @@
     <title>Movie</title>
     <style>
         table {
-            width: 80%;
+            width: 70%;
             border-collapse: collapse;
             margin-top: 20px;
         }
@@ -52,8 +52,6 @@
 
         personalMovieDB.movies.push({ name: filmName, rating: Number(filmRating) });
     }
-
-    console.log(personalMovieDB);
 
     function renderMoviesTable(movies) {
         const table = document.createElement('table');
