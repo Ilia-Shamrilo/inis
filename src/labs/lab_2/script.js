@@ -2,13 +2,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const container = document.getElementById("shirt-container");
 
     shirts.forEach(shirt => {
-        // Получаем первый доступный цвет
         const colorKeys = Object.keys(shirt.colors);
         const firstColor = colorKeys.length > 0 ? colorKeys[0] : null;
         const frontImage = firstColor ? shirt.colors[firstColor].front : shirt.default.front;
 
-        // Создаём карточку футболки
-        const card = document.createElement("div");
+        const card = document.createElement("div");//создаем новую карточку
         card.classList.add("shirt-card");
 
         card.innerHTML = `
